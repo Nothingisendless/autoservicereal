@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class AutomobilioModelis(models.Model):
     marke = models.CharField(verbose_name="Markė", max_length=100)
@@ -8,9 +9,9 @@ class AutomobilioModelis(models.Model):
     def __str__(self):
         return f'{self.marke} {self.modelis}'
 
-     class Meta:
-            verbose_name = "Automobilio modelis"
-            verbose_name_plural = "Automobilių modeliai"
+    class Meta:
+        verbose_name = "Automobilio modelis"
+        verbose_name_plural = "Automobilių modeliai"
 
 
 class Automobilis(models.Model):
@@ -22,11 +23,9 @@ class Automobilis(models.Model):
     def __str__(self):
         return f'{self.marke} {self.modelis} ({self.valstybinis_nr})'
 
-
     class Meta:
         verbose_name = "Automobilis"
         verbose_name_plural = "Automobiliai"
-
 
 
 class Paslauga(models.Model):
@@ -45,6 +44,27 @@ class Uzsakymas(models.Model):
     data = models.DateTimeField(verbose_name="Data", auto_now_add=True)
     automobilis = models.ForeignKey(to="Automobilis", on_delete=models.CASCADE)
 
+
+    LAON_STATUS = (
+        ("p", 'Patvirtinta'),
+        ("v", 'Vykdoma'),
+        ("a", 'Atšaukta'),
+        ("i", 'Įvykdyta'),
+
+    )
+
+    status = models.CharField(
+        max_length=1,
+        choices=LAON_STATUS,
+        blank=True,
+        default='p',
+        help_text='Statusas',
+
+    )
+
+
+
+
     def suma(self):
         suma = 0
         eilutes = self.eilutes.all()
@@ -61,13 +81,12 @@ class Uzsakymas(models.Model):
 
 
 class UzsakymoEilute(models.Model):
-    uzsakymas = models.ForeignKey(to="Uzsakymas", on_delete=models.CASCADE, related_name=) #Nebaigat
+    uzsakymas = models.ForeignKey(to="Uzsakymas", on_delete=models.CASCADE, related_name="eilutes")
     paslauga = models.ForeignKey(to="paslauga", on_delete=models.SET_NULL, null=True)
-    kiekis = models.IntegerField(verbose_name="Kiekis", max_length=50)
-
+    kiekis = models.IntegerField(verbose_name="Kiekis")
 
     def kaina(self):
-        return  self.paslauga.kaina * self.kiekis
+        return self.paslauga.kaina * self.kiekis
 
     def __str__(self):
         return f'{self.uzsakymas.data}, {self.paslauga} ({self.kiekis}'
