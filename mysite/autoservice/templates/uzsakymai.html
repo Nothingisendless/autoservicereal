@@ -3,6 +3,6 @@
 {% block content %}
 {% for uzsakymai in uzsakymas %}
 <hr>
-<p>{{ uzsakymas }}</p>
+<p><a href="{{uzsakymas.id}}">{{ uzsakymas }}</a></p>
 {% endfor %}
 {% endblock %}

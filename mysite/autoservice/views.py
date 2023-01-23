@@ -36,3 +36,9 @@ class UzsakymasListView(generic.ListView):
     model = Uzsakymas
     template_name_suffix = "uzsakymai.html"
     context_object_name = "uzsakymai"
+
+
+class UzsakymasDetailView(generic.DetailView):
+    model = Uzsakymas
+    template_name = "uzsakymas.html"
+    context_object_name = "uzsakymas"
