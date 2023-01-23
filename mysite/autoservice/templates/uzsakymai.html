@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Uzsakymai{% endblock %}
+{% block content %}
+{% for uzsakymai in uzsakymas %}
+<hr>
+<p>{{ uzsakymas }}</p>
+{% endfor %}
+{% endblock %}
