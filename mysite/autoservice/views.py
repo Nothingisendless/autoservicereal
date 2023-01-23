@@ -23,4 +23,3 @@ def automobiliai (request):
     return render(request, 'automobiliai.html', context=context)
 
 
-def automobilis(request):
