@@ -1,7 +1,18 @@
 {% extends "base.html" %}
 {% block title %}Automobilis{% endblock %}
-
 {% block content %}
+ {% load static %}
+
+<div class="col-md-4 d-flex align-items-stretch">
+    <div>
+        {% if automobilis.photo %}
+        <img src="{{ automobilis.photo.url }}" class="card-img-top" alt="...">
+        {% else %}
+        <img src="{% static 'img/no-image.png' %}" class="card-img-top">
+        {% endif %}
+    </div>
+</div>
+
 <ul>
     <li>Modelis: <b>{{automobilis.automobilio_modelis}}</b></li>
     <li>VIN kodas: <b>{{automobilis.vin_kodas}}</b></li>

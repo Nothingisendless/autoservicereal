@@ -19,9 +19,10 @@ class Automobilis(models.Model):
     vin_kodas = models.CharField(verbose_name="VIN kodas", max_length=100)
     klientas = models.CharField(verbose_name="Klientas", max_length=100)
     automobilio_modelis = models.ForeignKey(to=AutomobilioModelis, on_delete=models.SET_NULL, null=True)
+    photo = models.ImageField('Nuotrauka', upload_to='covers', null=True, blank=True)
 
     def __str__(self):
-        return f'{self.marke} {self.modelis} ({self.valstybinis_nr})'
+        return f'{self.automobilio_modelis.marke} {self.automobilio_modelis.modelis} ({self.valstybinis_nr})'
 
     class Meta:
         verbose_name = "Automobilis"
