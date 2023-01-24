@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Paslauga, Automobilis, Uzsakymas
 from django.views import generic
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 
 # Create your views here.
@@ -46,3 +47,9 @@ class UzsakymasDetailView(generic.DetailView):
     model = Uzsakymas
     template_name = "uzsakymas.html"
     context_object_name = "uzsakymas"
+
+
+def search(request):
+    query = request.GET.get('query')
+    search_results = Automobilis.objects.filter(Q(klientas__icontains=query) | Q(automobilio_modelis__marke__icontains=query) | Q(automobilio_modelis__modelis__icontains=query) | Q(valstybini_nr__icontains=query) | Q(vin_kodas__icontains=query))
+    return render(request, 'search.html', {'automobiliai': search_results, 'query': query})
