@@ -1,5 +1,13 @@
-from django.db import models
+import datetime
 
+from django.db import models
+from django.contrib.auth.models import User
+from datetime import date
+import pytz
+from tinymce.models import HTMLField
+
+description = HTMLField()
+uts = pytz.UTC
 
 # Create your models here.
 class AutomobilioModelis(models.Model):
@@ -20,6 +28,7 @@ class Automobilis(models.Model):
     klientas = models.CharField(verbose_name="Klientas", max_length=100)
     automobilio_modelis = models.ForeignKey(to=AutomobilioModelis, on_delete=models.SET_NULL, null=True)
     photo = models.ImageField('Nuotrauka', upload_to='covers', null=True, blank=True)
+    aprasymas = HTMLField(verbose_name="Aprasymas", null=True, blank=True)
 
     def __str__(self):
         return f'{self.automobilio_modelis.marke} {self.automobilio_modelis.modelis} ({self.valstybinis_nr})'
@@ -43,7 +52,16 @@ class Paslauga(models.Model):
 
 class Uzsakymas(models.Model):
     data = models.DateTimeField(verbose_name="Data", auto_now_add=True)
+    terminas = models.DateTimeField(verbose_name="Terminas", null=True)
     automobilis = models.ForeignKey(to="Automobilis", on_delete=models.CASCADE)
+    vartotojas = models.ForeignKey(to=User, verbose_name="Vartotojas", on_delete=models.SET_NULL, null=True, blank=True)
+
+    def ar_praejo_terminas(self):
+        if self.terminas:
+            return self.terminas.replace(tzinfo=pytz.utc) < datetime.datetime.today()
+        else:
+            return False
+
 
 
     LAON_STATUS = (

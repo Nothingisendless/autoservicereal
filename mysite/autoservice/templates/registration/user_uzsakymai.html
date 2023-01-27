@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Mano Uzsakymai{% endblock %}
+{% block content %}
+<h1>Mano uzsakymai:</h1>
+{% for uzsakymai in uzsakymas %}
+<hr>
+<p><a class="{% if uzsakymas.ar_praejo_terminas %}text-danger{% endif %}">{{ uzsakymas }}</a></p>
+{% endfor %}
+{% endblock %}
+ <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; pirmas</a>
+            <a href="?page={{ page_obj.previous_page_number }}">atgal</a>
+        {% endif %}
+
+        <span class="current">
+            {{ page_obj.number }} iš {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">pirmyn</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">paskutinis &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}

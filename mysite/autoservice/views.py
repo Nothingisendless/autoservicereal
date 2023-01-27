@@ -57,3 +57,14 @@ def search(request):
     query = request.GET.get('query')
     search_results = Automobilis.objects.filter(Q(klientas__icontains=query) | Q(automobilio_modelis__marke__icontains=query) | Q(automobilio_modelis__modelis__icontains=query) | Q(valstybini_nr__icontains=query) | Q(vin_kodas__icontains=query))
     return render(request, 'search.html', {'automobiliai': search_results, 'query': query})
+
+
+class UserUzsakymasListView(generic.ListView):
+    model = Uzsakymas
+    paginate_by = 3
+    template_name_suffix = "user_uzsakymai.html"
+    context_object_name = "uzsakymai"
+
+    def get_queryset(self):
+        return Uzsakymas.objects.filter(vartotojas=self.request.user)
+
