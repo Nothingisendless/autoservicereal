@@ -3,7 +3,9 @@ from .models import (Automobilis,
                     AutomobilioModelis,
                     Paslauga,
                     Uzsakymas,
-                    UzsakymoEilute)
+                    UzsakymoEilute,
+                     Komentaras,
+                     Profilis)
 class UzsakymoEiluteInline(admin.TabularInline):
     model = UzsakymoEilute
     extra = 0
@@ -29,5 +31,5 @@ admin.site.register(AutomobilioModelis)
 admin.site.register(Paslauga, PaslaugaAdmin)
 admin.site.register(Uzsakymas, UzsakymasAdmin)
 admin.site.register(UzsakymoEilute, UzsakymoEiluteAdmin)
-
-
+admin.site.register(Komentaras)
+admin.site.register(Profilis)

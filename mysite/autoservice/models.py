@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from datetime import date
 import pytz
 from tinymce.models import HTMLField
+from PIL import Image
 
 description = HTMLField()
 uts = pytz.UTC
@@ -113,3 +114,31 @@ class UzsakymoEilute(models.Model):
     class Meta:
         verbose_name = "Užsakymo eilutė"
         verbose_name_plural = "Užsakymų eilutės"
+
+
+class Komentaras(models.Model):
+    uzsakymas = models.ForeignKey('Uzsakymas', verbose_name="Užsakymas", on_delete=models.CASCADE, related_name="komentarai", null=True, blank=True)
+    vartotojas = models.ForeignKey(to=User, verbose_name="Vartotojas", on_delete=models.CASCADE, null=True, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    tekstas = models.TextField(verbose_name="Tekstas", max_length=1000)
+
+    class Meta:
+        verbose_name = "Užsakymas"
+        verbose_name_plural = "Užsakymai"
+        ordering = ['-date_created']
+
+class Profilis(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profilis')
+    nuotrauka = models.ImageField(default="profile_pics/default.png", upload_to="profile_pics")
+
+    def __str__(self):
+        return f"{self.user.username} profilis"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        img = Image.open(self.nuotrauka.path)
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.nuotrauka.path)
+
